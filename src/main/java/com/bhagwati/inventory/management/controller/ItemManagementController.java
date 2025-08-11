@@ -16,7 +16,6 @@ import com.mongodb.client.result.DeleteResult;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 @RestController
-@CrossOrigin(value = "http://localhost:4200")
 public class ItemManagementController {
 //
 //

@@ -1,6 +1,5 @@
 package com.bhagwati.inventory.management.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,14 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bhagwati.inventory.management.dataAccessLayer.ItemService;
-import com.bhagwati.inventory.management.dataAccessLayer.ReactiveMongoConn;
 import com.bhagwati.inventory.management.entity.Item;
 import com.mongodb.client.result.DeleteResult;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 @RestController
-@CrossOrigin(value = "http://localhost:4200")
 public class ItemController {
 
 	private ItemService itemService;

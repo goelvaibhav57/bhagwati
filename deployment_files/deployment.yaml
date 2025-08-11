@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bhagwati-deployment
+  namespace: bhagwati-ns
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bhagwati-be
+  template:
+    metadata:
+      labels:
+        app: bhagwati-be
+    spec:
+      containers:
+      - name: bhagwati-container
+        image: bhagwati-be:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config/application.properties
+        env:
+        - name: spring.datasource.password
+          valueFrom:
+            secretKeyRef:
+              name: bhagwati-secret
+              key: spring.datasource.password
+      volumes:
+      - name: config-volume
+        configMap:
+          name: bhagwati-config

@@ -1,0 +1,6 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: bhagwati-ns
+  labels:
+    name: bhagwati-ns

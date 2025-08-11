@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bhagwati-fe-ingress
+  namespace: bhagwati-ns	
+spec:
+  rules:
+   - host: vgnagp.com
+     http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bhagwati-fe-svc
+            port:	
+              number: 8081
+  ingressClassName: nginx

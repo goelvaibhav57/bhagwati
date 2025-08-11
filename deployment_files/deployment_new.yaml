@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bhagwati-deployment
+  namespace: bhagwati-ns
+  labels:
+    app: bhagwati
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bhagwati
+  template:
+    metadata:
+      labels:
+        app: bhagwati
+    spec:
+      containers:
+      - name: bhagwati-container
+        image: bhagwati-be:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080

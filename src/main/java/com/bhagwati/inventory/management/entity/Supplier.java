@@ -5,12 +5,7 @@ import java.util.Date;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Document("supplier")
-@Getter
-@Setter
 public class Supplier {
 	@Indexed(unique = true)
 	private String supplierId;

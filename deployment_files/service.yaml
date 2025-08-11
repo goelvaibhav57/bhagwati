@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bhagwati-svc
+  namespace: bhagwati-ns
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: bhagwati
