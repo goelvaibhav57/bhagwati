@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: bhagwati-fe-container
-        image: bhagwati-fe:latest
+        image: goelvaibhav57/bhagwati-fe:bhagwati-fe_1.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8081

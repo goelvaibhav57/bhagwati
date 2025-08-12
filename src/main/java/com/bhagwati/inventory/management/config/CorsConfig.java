@@ -13,8 +13,7 @@ public class CorsConfig {
       @Override
       public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-//          .allowedOrigins("http://localhost:4200") // based on Origin header
-        .allowedOrigins("http://vgnagp.com")
+        .allowedOrigins("*")
         .allowedMethods("GET", "POST", "PUT", "DELETE")
           .allowedHeaders("*")
           .allowCredentials(true);
