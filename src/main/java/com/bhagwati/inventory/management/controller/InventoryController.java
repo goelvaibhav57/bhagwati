@@ -1,7 +1,5 @@
 package com.bhagwati.inventory.management.controller;
 
-import java.math.BigInteger;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,33 +29,33 @@ public class InventoryController {
 		this.inventoryService = inventoryService;
 	}
 	
-	@GetMapping("/inventory/itemCode/{itemCode}")
-	public Flux<Inventory> getItemByItemCode(@PathVariable String itemCode) {
-		Flux<Inventory> response = inventoryService.getInventoryByItemCode(itemCode);
+	@GetMapping("/inventory/itemId/{itemId}")
+	public Flux<Inventory> getItemByItemId(@PathVariable Long itemId) {
+		Flux<Inventory> response = inventoryService.getInventoryByItemId(itemId);
 		return response;
 	}
 	
-	@PutMapping("/inventory/add/{itemCode}")
-	public Mono<Inventory> addInventory(@PathVariable String itemCode, @RequestBody Inventory inventory){
-		Mono<Inventory> response = inventoryService.addInventory(itemCode,inventory);
+	@PutMapping("/inventory/add/{itemId}")
+	public Mono<Inventory> addInventory(@PathVariable Long itemId, @RequestBody Inventory inventory){
+		Mono<Inventory> response = inventoryService.addInventory(itemId,inventory);
 		return response;
 	}
 	
-	@PutMapping("/inventory/debit/{itemCode}")
-	public Mono<Inventory> debitInventory(@PathVariable String itemCode, @RequestBody Inventory inventory){
-		Mono<Inventory> response = inventoryService.debitInventory(itemCode,inventory);
+	@PutMapping("/inventory/debit/{itemId}")
+	public Mono<Inventory> debitInventory(@PathVariable Long itemId, @RequestBody Inventory inventory){
+		Mono<Inventory> response = inventoryService.debitInventory(itemId,inventory);
 		return response;
 	}
 	
-	@DeleteMapping("/inventory/delete/{itemCode}")
-	public Mono<DeleteResult> deleteInventory(@PathVariable String itemCode){
-		Mono<DeleteResult> response = inventoryService.deleteInventory(itemCode);
+	@DeleteMapping("/inventory/delete/{itemId}")
+	public Mono<DeleteResult> deleteInventory(@PathVariable Long itemId){
+		Mono<DeleteResult> response = inventoryService.deleteInventory(itemId);
 		return response;
 	}
 
-	@PutMapping("/inventory/update/item/{itemCode}")
-	public Mono<UpdateResult> updateInventoryItem(@PathVariable String itemCode, @RequestBody Item item){
-		Mono<UpdateResult> response = inventoryService.updateInventoryItem(itemCode, item);
+	@PutMapping("/inventory/update/item/{itemId}")
+	public Mono<UpdateResult> updateInventoryItem(@PathVariable Long itemId, @RequestBody Item item){
+		Mono<UpdateResult> response = inventoryService.updateInventoryItem(itemId, item);
 		return response;
 	}
 	

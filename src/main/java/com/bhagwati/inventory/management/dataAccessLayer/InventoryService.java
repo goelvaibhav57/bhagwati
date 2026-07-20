@@ -1,7 +1,5 @@
 package com.bhagwati.inventory.management.dataAccessLayer;
 
-import java.math.BigInteger;
-
 import com.bhagwati.inventory.management.entity.Inventory;
 import com.bhagwati.inventory.management.entity.Item;
 import com.bhagwati.inventory.management.entity.Supplier;
@@ -14,18 +12,18 @@ import reactor.core.publisher.Mono;
 
 public interface InventoryService {
 
-	Flux<Inventory> getInventoryByItemCode(String itemCode);
+	Flux<Inventory> getInventoryByItemId(Long itemId);
 
-	Mono<Inventory> addInventory(String itemCode, Inventory inventory);
+	Mono<Inventory> addInventory(Long itemId, Inventory inventory);
 
-	Mono<Inventory> debitInventory(String itemCode, Inventory inventory);
+	Mono<Inventory> debitInventory(Long itemId, Inventory inventory);
 
-	Mono<UpdateResult> updateInventoryItem(String itemCode, Item item);
+	Mono<UpdateResult> updateInventoryItem(Long itemId, Item item);
 
 	Mono<UpdateResult> updateInventoryVendor(String vendorId, Vendor vendor);
 
 	Mono<UpdateResult> updateInventorySupplier(String supplierId, Supplier supplier);
 
-	Mono<DeleteResult> deleteInventory(String itemCode);
+	Mono<DeleteResult> deleteInventory(Long itemId);
 	
 }

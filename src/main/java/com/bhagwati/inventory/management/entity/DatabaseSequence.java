@@ -3,12 +3,7 @@ package com.bhagwati.inventory.management.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Document("database_sequences")
-@Getter
-@Setter
 public class DatabaseSequence {
 
 	@Id
@@ -47,8 +42,5 @@ public class DatabaseSequence {
 	public String toString() {
 		return "DatabaseSequence [id=" + id + ", seq=" + seq + "]";
 	}
-    
-    
-	
 	
 }

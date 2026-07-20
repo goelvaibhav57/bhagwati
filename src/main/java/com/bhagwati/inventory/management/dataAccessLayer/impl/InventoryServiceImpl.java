@@ -1,6 +1,5 @@
 package com.bhagwati.inventory.management.dataAccessLayer.impl;
 
-import java.math.BigInteger;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,24 +37,24 @@ public class InventoryServiceImpl implements InventoryService{
 	}
 
 	@Override
-	public Flux<Inventory> getInventoryByItemCode(String itemCode) {
+	public Flux<Inventory> getInventoryByItemId(Long itemId) {
 		Query query = new Query();
-        query.addCriteria(Criteria.where("item.itemCode").is(itemCode));
+        query.addCriteria(Criteria.where("item.itemId").is(itemId));
         query.with(Sort.by(Sort.Direction.DESC, "createdDate"));
 		return reactiveMongoTemplate.find(query, Inventory.class,"inventory");
 	}
 
 	@Override
-	public Mono<Inventory> addInventory(String itemCode, Inventory inventory) {
+	public Mono<Inventory> addInventory(Long itemId, Inventory inventory) {
 		Inventory newInventory =  new Inventory(); 
 		Query query = new Query();
 	    query.limit(1);
 	    query.with(Sort.by(Sort.Direction.DESC, "createdDate"));
-	    query.addCriteria(Criteria.where("item.itemCode").is(itemCode));
+	    query.addCriteria(Criteria.where("item.itemId").is(itemId));
 	    Flux<Inventory> latestInventoryResponse = reactiveMongoTemplate.find(query, Inventory.class,"inventory");
 	    Inventory latestInventory = latestInventoryResponse.blockFirst();
 		newInventory.setInventoryId(generateSequence("inventory_sequence"));
-		Item item = itemService.getItemByItemCode(itemCode).blockFirst();
+		Item item = itemService.getItemByItemId(itemId).blockFirst();
 	    newInventory.setItem(item);
 	    newInventory.setSupplier(inventory.getSupplier());
 	    newInventory.setComments(inventory.getComments());
@@ -73,16 +72,16 @@ public class InventoryServiceImpl implements InventoryService{
 	}
 
 	@Override
-	public Mono<Inventory> debitInventory(String itemCode, Inventory inventory) {
+	public Mono<Inventory> debitInventory(Long itemId, Inventory inventory) {
 		Inventory newInventory =  new Inventory(); 
 		Query query = new Query();
 	    query.limit(1);
 	    query.with(Sort.by(Sort.Direction.DESC, "createdDate"));
-	    query.addCriteria(Criteria.where("item.itemCode").is(itemCode));
+	    query.addCriteria(Criteria.where("item.itemId").is(itemId));
 	    Flux<Inventory> latestInventoryResponse = reactiveMongoTemplate.find(query, Inventory.class,"inventory");
 	    Inventory latestInventory = latestInventoryResponse.blockFirst();
 	    newInventory.setInventoryId(generateSequence("inventory_sequence"));
-	    Item item = itemService.getItemByItemCode(itemCode).blockFirst();
+	    Item item = itemService.getItemByItemId(itemId).blockFirst();
 	    newInventory.setItem(item);
 	    newInventory.setVendor(inventory.getVendor());
 	    newInventory.setCreatedDate(new Date());
@@ -94,9 +93,9 @@ public class InventoryServiceImpl implements InventoryService{
 	}
 
 	@Override
-	public Mono<DeleteResult> deleteInventory(String itemCode) {
+	public Mono<DeleteResult> deleteInventory(Long itemId) {
 		Query query = new Query();
-        query.addCriteria(Criteria.where("item.itemCode").is(itemCode));
+        query.addCriteria(Criteria.where("item.itemId").is(itemId));
 		Mono<DeleteResult> response = reactiveMongoTemplate.remove(query, Object.class, "inventory");
 		return response;
 	}
@@ -111,11 +110,11 @@ public class InventoryServiceImpl implements InventoryService{
 	}
 	
 	@Override
-	public Mono<UpdateResult> updateInventoryItem(String itemCode, Item item){
+	public Mono<UpdateResult> updateInventoryItem(Long itemId, Item item){
 		Update updateInventory = new Update();
 		Query inventoryQuery = new Query();
-		inventoryQuery.addCriteria(Criteria.where("item.itemCode").is(itemCode));
-		updateInventory.set("item.itemCode", item.getItemCode());
+		inventoryQuery.addCriteria(Criteria.where("item.itemId").is(itemId));
+		updateInventory.set("item.itemId", item.getItemId());
 		updateInventory.set("item.itemDescription", item.getItemDescription());
 		return reactiveMongoTemplate.updateMulti(inventoryQuery, updateInventory, Inventory.class, "inventory");
 	}

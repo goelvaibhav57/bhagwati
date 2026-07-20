@@ -5,19 +5,23 @@ import java.util.Date;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Document("item")
-@Getter
-@Setter
 public class Item {
 	@Indexed(unique = true)
+	private Long itemId;
 	private String itemCode;
 	private String itemDescription;
 	private Integer warehouseNumber;
 	private Date createdDate;
 	private Date lastUpdated;
+	
+
+	public Long getItemId() {
+		return itemId;
+	}
+	public void setItemId(Long itemId) {
+		this.itemId = itemId;
+	}
 	public String getItemCode() {
 		return itemCode;
 	}
@@ -48,8 +52,9 @@ public class Item {
 	public void setLastUpdated(Date lastUpdated) {
 		this.lastUpdated = lastUpdated;
 	}
-	public Item(String itemCode, String itemDescription, Integer warehouseNumber, Date createdDate, Date lastUpdated) {
+	public Item(Long itemId, String itemCode, String itemDescription, Integer warehouseNumber, Date createdDate, Date lastUpdated) {
 		super();
+		this.itemId = itemId;
 		this.itemCode = itemCode;
 		this.itemDescription = itemDescription;
 		this.warehouseNumber = warehouseNumber;
@@ -58,7 +63,7 @@ public class Item {
 	}
 	@Override
 	public String toString() {
-		return "Item [itemCode=" + itemCode + ", itemDescription=" + itemDescription + ", warehouseNumber="
+		return "Item [itemId=" + itemId + ", itemCode=" + itemCode + ", itemDescription=" + itemDescription + ", warehouseNumber="
 				+ warehouseNumber + ", createdDate=" + createdDate + ", lastUpdated=" + lastUpdated + "]";
 	}
 	public Item() {

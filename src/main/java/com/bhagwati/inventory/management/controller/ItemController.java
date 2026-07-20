@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bhagwati.inventory.management.dataAccessLayer.ItemService;
-import com.bhagwati.inventory.management.dataAccessLayer.ReactiveMongoConn;
 import com.bhagwati.inventory.management.entity.Item;
 import com.mongodb.client.result.DeleteResult;
 
@@ -33,9 +32,9 @@ public class ItemController {
 		return response;
 	}
 	
-	@GetMapping("/item/{itemCode}")
-	public Flux<Item> getItemByItemCode(@PathVariable String itemCode) {
-		Flux<Item> response = itemService.getItemByItemCode(itemCode);
+	@GetMapping("/item/{itemId}")
+	public Flux<Item> getItemByItemId(@PathVariable Long itemId) {
+		Flux<Item> response = itemService.getItemByItemId(itemId);
 		return response;
 	}
 	
@@ -45,15 +44,15 @@ public class ItemController {
 		return response;
 	}
 	
-	@PutMapping("/update/item/{itemCode}")
-	public Mono<Item> updateItem(@PathVariable String itemCode, @RequestBody Item item){
-		Mono<Item> response = itemService.updateItemDetails(itemCode,item);
+	@PutMapping("/update/item/{itemId}")
+	public Mono<Item> updateItem(@PathVariable Long itemId, @RequestBody Item item){
+		Mono<Item> response = itemService.updateItemDetails(itemId, item);
 		return response;
 	}
 	
-	@DeleteMapping("delete/item/{itemCode}")
-	public Mono<DeleteResult> deleteItem(@PathVariable String itemCode){
-		return itemService.deleteItem(itemCode);
+	@DeleteMapping("delete/item/{itemId}")
+	public Mono<DeleteResult> deleteItem(@PathVariable Long itemId){
+		return itemService.deleteItem(itemId);
 	}
 
 }

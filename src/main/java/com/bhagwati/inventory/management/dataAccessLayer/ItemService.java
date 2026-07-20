@@ -10,12 +10,12 @@ public interface ItemService {
 
 	Mono<Item> createItem(Item item);
 
-	Flux<Item> getItemByItemCode(String itemCode);
+	Flux<Item> getItemByItemId(Long itemId);
 
 	Flux<Item> getAllItems();
 
-	Mono<Item> updateItemDetails(String itemCode, Item item);
+	Mono<Item> updateItemDetails(Long itemId, Item item);
 
-	Mono<DeleteResult> deleteItem(String itemCode);
+	Mono<DeleteResult> deleteItem(Long itemId);
 
 }
