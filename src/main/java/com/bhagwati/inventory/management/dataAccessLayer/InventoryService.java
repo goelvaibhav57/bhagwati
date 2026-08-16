@@ -1,5 +1,8 @@
 package com.bhagwati.inventory.management.dataAccessLayer;
 
+import java.util.List;
+
+import com.bhagwati.inventory.dataTransferObjects.BulkInventoryRequest;
 import com.bhagwati.inventory.management.entity.Inventory;
 import com.bhagwati.inventory.management.entity.Item;
 import com.bhagwati.inventory.management.entity.Supplier;
@@ -25,5 +28,7 @@ public interface InventoryService {
 	Mono<UpdateResult> updateInventorySupplier(String supplierId, Supplier supplier);
 
 	Mono<DeleteResult> deleteInventory(Long itemId);
+
+    Flux<Inventory> bulkAddInventory(List<BulkInventoryRequest> bulkInventoryRequests);
 	
 }

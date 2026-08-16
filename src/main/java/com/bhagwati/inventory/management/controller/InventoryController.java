@@ -1,13 +1,17 @@
 package com.bhagwati.inventory.management.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bhagwati.inventory.dataTransferObjects.BulkInventoryRequest;
 import com.bhagwati.inventory.management.dataAccessLayer.InventoryService;
 import com.bhagwati.inventory.management.entity.Inventory;
 import com.bhagwati.inventory.management.entity.Item;
@@ -70,6 +74,11 @@ public class InventoryController {
 		Mono<UpdateResult> response = inventoryService.updateInventorySupplier(supplierId, supplier);
 		return response;
 	}
-	
+
+	@PostMapping("/inventory/bulk/add")
+	public Flux<Inventory> bulkAddInventory(@RequestBody List<BulkInventoryRequest> bulkInventoryRequests){
+		Flux<Inventory> response = inventoryService.bulkAddInventory(bulkInventoryRequests);
+		return response;
+	}
 
 }

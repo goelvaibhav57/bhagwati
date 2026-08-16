@@ -1,6 +1,8 @@
 package com.bhagwati.inventory.management.dataAccessLayer.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -11,8 +13,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import com.bhagwati.inventory.dataTransferObjects.BulkInventoryRequest;
 import com.bhagwati.inventory.management.dataAccessLayer.InventoryService;
 import com.bhagwati.inventory.management.dataAccessLayer.ItemService;
+import com.bhagwati.inventory.management.dataAccessLayer.SupplierService;
 import com.bhagwati.inventory.management.entity.DatabaseSequence;
 import com.bhagwati.inventory.management.entity.Inventory;
 import com.bhagwati.inventory.management.entity.Item;
@@ -31,9 +35,12 @@ public class InventoryServiceImpl implements InventoryService{
 	private ReactiveMongoTemplate reactiveMongoTemplate;
 	
 	private ItemService itemService;
+
+	private SupplierService supplierService;
 	
-	public InventoryServiceImpl(ItemService itemService) {
+	public InventoryServiceImpl(ItemService itemService, SupplierService supplierService) {
 		this.itemService = itemService;
+		this.supplierService = supplierService;
 	}
 
 	@Override
@@ -137,6 +144,20 @@ public class InventoryServiceImpl implements InventoryService{
 		updateInventory.set("supplier.supplierId", supplier.getSupplierId());
 		updateInventory.set("supplier.supplierDescription", supplier.getSupplierDescription());
 		return reactiveMongoTemplate.updateMulti(inventoryQuery, updateInventory, Inventory.class, "inventory");
+	}
+
+	@Override
+	public Flux<Inventory> bulkAddInventory(List<BulkInventoryRequest> bulkInventoryRequests) {
+		List<Inventory> inventories = new ArrayList<>();
+			for(BulkInventoryRequest bulkInventoryRequest : bulkInventoryRequests) {
+			Supplier supplier = supplierService.getSupplierBySupplierId(bulkInventoryRequest.getSupplierId()).blockFirst();
+			Inventory inventory = new Inventory();
+			inventory.setInventoryCredited(bulkInventoryRequest.getInventoryCredited());
+			inventory.setSupplier(supplier);
+			inventory.setComments(bulkInventoryRequest.getComments());
+			inventories.add(addInventory(bulkInventoryRequest.getItemId(), inventory).block());
+		}
+		return Flux.fromIterable(inventories);
 	}
 
 }
