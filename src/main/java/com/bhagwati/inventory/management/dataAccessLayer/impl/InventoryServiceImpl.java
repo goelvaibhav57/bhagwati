@@ -13,10 +13,12 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import com.bhagwati.inventory.dataTransferObjects.BulkInventoryDebitRequest;
 import com.bhagwati.inventory.dataTransferObjects.BulkInventoryRequest;
 import com.bhagwati.inventory.management.dataAccessLayer.InventoryService;
 import com.bhagwati.inventory.management.dataAccessLayer.ItemService;
 import com.bhagwati.inventory.management.dataAccessLayer.SupplierService;
+import com.bhagwati.inventory.management.dataAccessLayer.VendorService;
 import com.bhagwati.inventory.management.entity.DatabaseSequence;
 import com.bhagwati.inventory.management.entity.Inventory;
 import com.bhagwati.inventory.management.entity.Item;
@@ -37,10 +39,13 @@ public class InventoryServiceImpl implements InventoryService{
 	private ItemService itemService;
 
 	private SupplierService supplierService;
+
+	private VendorService vendorService;
 	
-	public InventoryServiceImpl(ItemService itemService, SupplierService supplierService) {
+	public InventoryServiceImpl(ItemService itemService, SupplierService supplierService, VendorService vendorService) {
 		this.itemService = itemService;
 		this.supplierService = supplierService;
+		this.vendorService = vendorService;
 	}
 
 	@Override
@@ -156,6 +161,20 @@ public class InventoryServiceImpl implements InventoryService{
 			inventory.setSupplier(supplier);
 			inventory.setComments(bulkInventoryRequest.getComments());
 			inventories.add(addInventory(bulkInventoryRequest.getItemId(), inventory).block());
+		}
+		return Flux.fromIterable(inventories);
+	}
+
+	@Override
+	public Flux<Inventory> bulkDebitInventory(List<BulkInventoryDebitRequest> bulkInventoryDebitRequests) {
+		List<Inventory> inventories = new ArrayList<>();
+		for(BulkInventoryDebitRequest bulkInventoryDebitRequest : bulkInventoryDebitRequests) {
+			Vendor vendor = vendorService.getVendorByVendorId(bulkInventoryDebitRequest.getVendorId()).blockFirst();
+			Inventory inventory = new Inventory();
+			inventory.setInventoryDebited(bulkInventoryDebitRequest.getInventoryDebited());
+			inventory.setVendor(vendor);
+			inventory.setComments(bulkInventoryDebitRequest.getComments());
+			inventories.add(debitInventory(bulkInventoryDebitRequest.getItemId(), inventory).block());
 		}
 		return Flux.fromIterable(inventories);
 	}

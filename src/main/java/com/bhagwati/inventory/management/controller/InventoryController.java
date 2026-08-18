@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bhagwati.inventory.dataTransferObjects.BulkInventoryDebitRequest;
 import com.bhagwati.inventory.dataTransferObjects.BulkInventoryRequest;
 import com.bhagwati.inventory.management.dataAccessLayer.InventoryService;
 import com.bhagwati.inventory.management.entity.Inventory;
@@ -78,6 +79,12 @@ public class InventoryController {
 	@PostMapping("/inventory/bulk/add")
 	public Flux<Inventory> bulkAddInventory(@RequestBody List<BulkInventoryRequest> bulkInventoryRequests){
 		Flux<Inventory> response = inventoryService.bulkAddInventory(bulkInventoryRequests);
+		return response;
+	}
+
+	@PostMapping("/inventory/bulk/debit")
+	public Flux<Inventory> bulkDebitInventory(@RequestBody List<BulkInventoryDebitRequest> bulkInventoryDebitRequests){
+		Flux<Inventory> response = inventoryService.bulkDebitInventory(bulkInventoryDebitRequests);
 		return response;
 	}
 
